@@ -1,21 +1,16 @@
-# Stage 1: Build the JAR using Maven
-FROM maven:3.9.5-eclipse-temurin-17 AS build
-WORKDIR /app
-
-# Copy only pom.xml first (to cache dependencies)
-COPY spring-boot-hello-world-example/pom.xml .
-RUN mvn dependency:go-offline -B
-
-# Copy source code
-COPY spring-boot-hello-world-example/src ./src
-
-# Build the jar
-RUN mvn clean package -DskipTests
-
-# Stage 2: Run the Spring Boot app
+# Use official OpenJDK 17 image as base
 FROM openjdk:17-jdk-slim
+
+# Set working directory
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+
+# Copy the Spring Boot WAR into the container
+COPY spring-boot-hello-world-example/target/SpringBootHelloWorldExample.war app.war
+
+# Expose the port the app runs on
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+# Run the WAR file
+ENTRYPOINT ["java","-jar","app.war"]
+
 
