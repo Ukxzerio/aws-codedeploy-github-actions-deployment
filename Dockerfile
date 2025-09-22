@@ -1,16 +1,11 @@
-# Use official OpenJDK 17 image as base
-FROM openjdk:17-jdk-slim
-
-# Set working directory
+FROM maven:3.9.3-eclipse-temurin-17 AS build
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Copy the Spring Boot WAR into the container
-COPY spring-boot-hello-world-example/target/SpringBootHelloWorldExample.war app.war
-
-# Expose the port the app runs on
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=build /app/target/SpringBootHelloWorldExample.war app.war
 EXPOSE 8080
-
-# Run the WAR file
 ENTRYPOINT ["java","-jar","app.war"]
-
-
