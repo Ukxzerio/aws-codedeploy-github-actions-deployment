@@ -13,7 +13,7 @@
 	<version>1</version>
 	<name>SpringBootHelloWorldExampleApplication</name>
 	<description>Demo project for Spring Boot</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

@@ -17,11 +17,11 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-# Copy the WAR file from the builder stage
-COPY --from=builder /app/target/*.war app.war
+# Copy the JAR file from the builder stage
+COPY --from=builder /app/target/*.jar app.jar
 
 # Expose port
 EXPOSE 8080
 
-# Run the WAR file
-ENTRYPOINT ["java", "-jar", "app.war"]
+# Run the JAR file
+ENTRYPOINT ["java", "-jar", "app.jar"]
